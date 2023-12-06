@@ -1,26 +1,37 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
+import { Hover, languages } from "vscode";
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+  type ExpandRecursively<T> = T extends object
+    ? T extends infer O
+      ? { [K in keyof O]: ExpandRecursively<O[K]> }
+      : never
+    : T;
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "recursive-types" is now active!');
+  // type ExpandedText = ExpandRecursively<T>;
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('recursive-types.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from Recursive Types!');
-	});
+  // The command has been defined in the package.json file
+  // Now provide the implementation of the command with registerCommand
+  // The commandId parameter must match the command field in package.json
 
-	context.subscriptions.push(disposable);
+  let disposable = languages.registerHoverProvider(
+    ["typescript", "typescriptreact"],
+    {
+      provideHover(document, position, token) {
+        const range = document.getWordRangeAtPosition(position);
+        const word = document.getText(range);
+
+        return new Hover({
+          language: "typescript",
+          value: word,
+        });
+      },
+    }
+  );
+
+  context.subscriptions.push(disposable);
 }
 
 // This method is called when your extension is deactivated
 export function deactivate() {}
+

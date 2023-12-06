@@ -7,17 +7,38 @@
     "vscode": "^1.84.0"
   },
   "categories": [
-    "Other"
+    "Programming Languages"
   ],
-  "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "recursive-types.helloWorld",
-        "title": "Hello World"
+        "command": "recursive-types.toggleRecursiveTypes",
+        "title": "Toggle Recursive Types"
       }
-    ]
+    ],
+    "languages": [
+      {
+       "id": "typescript",
+       "extensions": [
+        ".ts"
+       ],
+       "aliases": [
+        "typescript"
+       ],
+       "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "typescriptreact",
+        "extensions": [
+          ".tsx"
+        ],
+        "aliases": [
+          "TypeScript JSX"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+     ]
   },
   "scripts": {
     "vscode:prepublish": "pnpm run package",
